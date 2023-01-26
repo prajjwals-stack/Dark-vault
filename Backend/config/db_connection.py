@@ -5,4 +5,4 @@ from pymongo import MongoClient
 m_client = MongoClient("mongodb://localhost:27017")
 db = m_client["dark_vault"]
 
-db["user management"].insert_one({"test":"test"})
+# db["user management"].insert_one({"test":"test"})
