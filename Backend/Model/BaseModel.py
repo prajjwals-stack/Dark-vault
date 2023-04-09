@@ -1,5 +1,7 @@
 from pydantic import BaseModel,Field
 
+class User(BaseModel):
+    name: str=Field(...)
 
 class UserSchema(BaseModel):
     email:str=Field(...)

@@ -16,3 +16,8 @@ class Auth:
         if(db[USER_COLLECTION].find_one({'email':email})):
             return True
         return False
+    
+    def UserCheck(self,username:str):
+        if(db[USER_COLLECTION].find_one({'username':username})):
+            return True
+        return False
