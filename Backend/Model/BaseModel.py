@@ -9,9 +9,13 @@ class UserSchema(BaseModel):
     password:str=Field(...)
  
 class PasswordSchema(BaseModel):
-    data:str=Field(...)
-    encrypted_password:str=Field(...)
+    data:str
+    encrypted_password:str
 
 class PinSchema(BaseModel):
     data:str=Field(...)
     encrypted_pin:str=Field(...)
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str

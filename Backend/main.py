@@ -1,4 +1,4 @@
-from fastapi import FastAPI,Body
+from fastapi import FastAPI,Body,HTTPException,Depends
 from fastapi.middleware.cors import CORSMiddleware
 from config.db_connection import db
 from Model.BaseModel import UserSchema, PasswordSchema,User
@@ -10,6 +10,8 @@ from encrypt.decrypt import Decryption
 import os 
 from config.config import PASSWORD_COLLECTION
 from config.db_connection import db
+import jwt
+from typing import Annotated
 
 
 key_str=b'\xc3~n.\xb4\x84Q\x8bK \x81\x15{\xe7\xe1\xe9"`?U\xb7\x8f\xb2\xed\xa31+m\x02\xcf+\xed'
@@ -24,10 +26,11 @@ app.add_middleware(
     allow_methods=["*"]
     )
 
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+SECRET_KEY = "mytokenispure"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
     
 
@@ -44,13 +47,22 @@ async def signup(data:UserSchema=Body(...)):
     return newdata
 
 @app.post('/login')
-async def login(username:str, password:str):
-    if(auth_obj.UserCheck(username)==False):
-        raise Exception("Username doesnt exists")
-    return {username,password}
+async def login(formdata:OAuth2PasswordRequestForm=Depends()):
+    if(auth_obj.UserCheck(formdata.username)==False):
+        raise HTTPException(status_code=404,detail="user does not exist")
+    if(auth_obj.VerifyPassword(formdata.username,formdata.password)==False):
+        raise HTTPException(status_code=401,detail="wrong credentials")
+    user_obj={
+        "username":formdata.username,
+    }
+    token=jwt.encode(user_obj,SECRET_KEY)
+    return {
+        "access_token":token,
+        "token_type":"bearer",
+    }
 
 @app.post('/add_credentials')
-async def add_credentials(data:PasswordSchema=Body(...)):
+async def add_credentials(data:PasswordSchema=Body(...),token: str=Depends(oauth2_scheme)):
     x=Encryption.Encrypt(data.encrypted_password)
     dict={
         "name":data.data,
@@ -58,11 +70,13 @@ async def add_credentials(data:PasswordSchema=Body(...)):
     }
     
     db[PASSWORD_COLLECTION].insert_one(dict)
-    return x
+    return "successfully added password"
 
 @app.post('/get_credentials')
-async def get_credentials(data:User=Body(...)):
+async def get_credentials(data:User=Body(...),token: str=Depends(oauth2_scheme)):
     print(data.name)
     y=db[PASSWORD_COLLECTION].find_one({'name':data.name},{'_id': 0})
+    if(y==None):
+        raise HTTPException(status_code=404,detail="data not found")
     x=Decryption.Decrypt(y["password"])
     return x

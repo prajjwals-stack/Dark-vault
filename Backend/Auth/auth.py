@@ -21,3 +21,10 @@ class Auth:
         if(db[USER_COLLECTION].find_one({'username':username})):
             return True
         return False
+
+    def VerifyPassword(self,username:str,password:str):
+        user=db[USER_COLLECTION].find_one({'username':username})
+        hashed_password=user['password']
+        if(pwd_context.verify(password,hashed_password)):
+            return True
+        return False
