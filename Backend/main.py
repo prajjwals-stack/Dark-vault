@@ -12,6 +12,7 @@ from config.config import PASSWORD_COLLECTION
 from config.db_connection import db
 import jwt
 from typing import Annotated
+from Auth import otp_obj
 
 
 key_str=b'\xc3~n.\xb4\x84Q\x8bK \x81\x15{\xe7\xe1\xe9"`?U\xb7\x8f\xb2\xed\xa31+m\x02\xcf+\xed'
@@ -80,3 +81,12 @@ async def get_credentials(data:User=Body(...),token: str=Depends(oauth2_scheme))
         raise HTTPException(status_code=404,detail="data not found")
     x=Decryption.Decrypt(y["password"])
     return x
+
+@app.post('/generate_otp')
+async def generate_otp_mobile(mobile_number:str):
+    return otp_obj.generate_otp(mobile_number)
+
+@app.post('/verify_otp')
+async def verify_otp_mobile(otp:str):
+    otp_obj.verify_otp(otp)
+    return True
