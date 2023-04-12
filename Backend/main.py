@@ -44,8 +44,8 @@ async def home():
 async def signup(data:UserSchema=Body(...)):
     newdata = jsonable_encoder(data)
     newdata=auth_obj.addUser(newdata)
-    otp_obj.generate_otp(data.username,data.password)
-    return newdata
+    image=otp_obj.generate_otp(data.username,data.password)
+    return image
 
 @app.post('/login')
 async def login(formdata:OAuth2PasswordRequestForm=Depends()):

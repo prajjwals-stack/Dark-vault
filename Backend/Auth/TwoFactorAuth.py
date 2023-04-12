@@ -10,8 +10,8 @@ class OTP():
     def generate_otp(self,username:str,password:str):
         print(self.totp) 
         x=pyotp.totp.TOTP('JBSWY3DPEHPK3PXP').provisioning_uri(name=f"{username}", issuer_name='Dark Vault LTD')
-        qrcode.make(x).save("qrcode.png")
-        return x
+        image=qrcode.make(x)
+        return image
 
     def verify_otp(self,otp:str):
         print(otp)
