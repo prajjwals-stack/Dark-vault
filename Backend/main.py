@@ -40,11 +40,11 @@ async def home():
     return {"message":"welcome to dark vault"}
 
 
-
 @app.post('/signup')
 async def signup(data:UserSchema=Body(...)):
     newdata = jsonable_encoder(data)
     newdata=auth_obj.addUser(newdata)
+    otp_obj.generate_otp(data.username,data.password)
     return newdata
 
 @app.post('/login')
@@ -82,11 +82,7 @@ async def get_credentials(data:User=Body(...),token: str=Depends(oauth2_scheme))
     x=Decryption.Decrypt(y["password"])
     return x
 
-@app.post('/generate_otp')
-async def generate_otp_mobile(mobile_number:str):
-    return otp_obj.generate_otp(mobile_number)
-
 @app.post('/verify_otp')
 async def verify_otp_mobile(otp:str):
-    otp_obj.verify_otp(otp)
-    return True
+    return otp_obj.verify_otp(otp)
+    

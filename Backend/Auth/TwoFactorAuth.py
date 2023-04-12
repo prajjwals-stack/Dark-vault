@@ -1,27 +1,21 @@
 import pyotp
 import json
-from twilio.rest import Client
-SECRET_KEY="OTP VERIFICATION SECRET KEY"
-ACCOUNT_SID='AC59d3f00185344ca7c80e290bc8bc0164'
-AUTH_TOKEN='73699ff878b5f367485ba0f0979f1cd7'
+import qrcode
 
-TARGET_MOBILE_NUMBER='+916261909030'
-
-client=Client(ACCOUNT_SID,AUTH_TOKEN)
 
 class OTP():
     def __init__(self):
-        # self.totp=pyotp.TOTP('base32secret')
-        self.totp=pyotp.totp.TOTP('MY KEY').provisioning_uri(name='prajjwal', issuer_name='Dark Vault LTD')
+        self.totp=pyotp.TOTP('JBSWY3DPEHPK3PXP')
 
-    def generate_otp(self,number:str):
-        print(type(self.totp)) 
-        x=self.totp
-        # message = client.messages.create(body=f"Your OTP for verification on Dark Vault is {x}",from_='+15076827113',
-        # to='+918651297204')
+    def generate_otp(self,username:str,password:str):
+        print(self.totp) 
+        x=pyotp.totp.TOTP('JBSWY3DPEHPK3PXP').provisioning_uri(name=f"{username}", issuer_name='Dark Vault LTD')
+        qrcode.make(x).save("qrcode.png")
         return x
 
     def verify_otp(self,otp:str):
         print(otp)
+        print(self.totp)
         x=self.totp.verify(otp)
         print(x)
+        return x
