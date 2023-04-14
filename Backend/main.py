@@ -13,6 +13,7 @@ from config.db_connection import db
 import jwt
 from typing import Annotated
 from Auth import otp_obj
+import base64
 
 
 key_str=b'\xc3~n.\xb4\x84Q\x8bK \x81\x15{\xe7\xe1\xe9"`?U\xb7\x8f\xb2\xed\xa31+m\x02\xcf+\xed'
@@ -21,7 +22,7 @@ app=FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:8080"],
     allow_credentials=True,
     allow_headers=["*"],
     allow_methods=["*"]

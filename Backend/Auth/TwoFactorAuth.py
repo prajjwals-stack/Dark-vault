@@ -11,7 +11,8 @@ class OTP():
         print(self.totp) 
         x=pyotp.totp.TOTP('JBSWY3DPEHPK3PXP').provisioning_uri(name=f"{username}", issuer_name='Dark Vault LTD')
         image=qrcode.make(x)
-        return image
+        
+        return x
 
     def verify_otp(self,otp:str):
         print(otp)
