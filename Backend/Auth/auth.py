@@ -3,8 +3,10 @@ from config.config import USER_COLLECTION
 from Model.BaseModel import UserSchema
 import bcrypt
 from passlib.context import CryptContext
-
+from cryptography.fernet import Fernet
 import jwt
+
+
 SECRET_KEY = "mytokenispure"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -17,7 +19,8 @@ class Auth:
             "email":data['email'],
             "username":data['username'],
             "password":pwd_context.encrypt(data['password']),
-            "uuid":uuid
+            "uuid":uuid,
+            "key":Fernet.generate_key()
         }
         db["user management"].insert_one(dict(Userdata))
         return "User added successfully"

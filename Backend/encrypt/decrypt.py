@@ -1,17 +1,21 @@
 from cryptography.fernet import Fernet
-import os
+from config.config import USER_COLLECTION
+from config.db_connection import db
 
 
-key=b'Zxys5wxsQ-ihvn8pOhHb-hZLGJE2BcxfItWEexbYosA='
-# key=os.environ['KEY']
 
-cipher = Fernet(key)
+
+
 
 
 
 
 class Decryption():
-    def Decrypt(encrypted_value:str):
+    def Decrypt(encrypted_value:str,uuid:str):
+        user=db[USER_COLLECTION].find_one({"uuid":uuid})
+        key=user["key"]
+        print(key)
+        cipher = Fernet(key)
         decrypted_value_bytes = cipher.decrypt(encrypted_value)
         decrypted_value = decrypted_value_bytes.decode()
         return decrypted_value

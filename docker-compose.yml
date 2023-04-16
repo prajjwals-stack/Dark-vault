@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+
+  DarkVault_backend:
+    build: ./
+    ports:
+      - 8001:8001
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
+    env_file:
+      - app.env
+    restart: always
+
+
+  DarkVault_frontend:
+   build: ./frontend
+   volumes:
+     - './frontend:/app'
+     - '/app/node_modules'
+   ports:
+     - 8081:8081
+   restart: always

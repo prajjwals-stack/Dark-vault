@@ -67,7 +67,8 @@ async def login(formdata:OAuth2PasswordRequestForm=Depends()):
 
 @app.post('/add_credentials')
 async def add_credentials(data:PasswordSchema=Body(...),token: str=Depends(oauth2_scheme)):
-    x=Encryption.Encrypt(data.encrypted_password)
+    UserUUID=auth_obj.get_current_user(token)
+    x=Encryption.Encrypt(data.encrypted_password,UserUUID)
     UserUUID=auth_obj.get_current_user(token)
     dict={
         "uuid": UserUUID,
@@ -80,11 +81,11 @@ async def add_credentials(data:PasswordSchema=Body(...),token: str=Depends(oauth
 
 @app.post('/get_credentials')
 async def get_credentials(PassName:str=Body(...),token: str=Depends(oauth2_scheme)):
-    
+    UserUUID=auth_obj.get_current_user(token)
     y=db[PASSWORD_COLLECTION].find_one({'name':PassName},{'_id': 0})
     if(y==None):
         raise HTTPException(status_code=404,detail="data not found")
-    x=Decryption.Decrypt(y["password"])
+    x=Decryption.Decrypt(y["password"],UserUUID)
     return x
 
 @app.get('/get_all_credentials')
