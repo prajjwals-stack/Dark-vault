@@ -17,6 +17,17 @@ With AES encryption, your passwords are transformed into an unreadable code that
 
 By using AES encryption, Dark Vault ensures that your passwords are kept safe from potential security breaches and unauthorized access. With its powerful encryption technology and other advanced security features, Dark Vault is the perfect solution for anyone looking to safeguard their sensitive information.
 
+## Schema
+```bash
+ # User Schema
+ username:str
+ email:str
+ password:str
+ uuid:str
+ AES_key:str
+ Py_OTP_key:str
+ ```
+
 ## Installation & Usage
 
 Run Locally
