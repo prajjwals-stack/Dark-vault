@@ -26,6 +26,11 @@ By using AES encryption, Dark Vault ensures that your passwords are kept safe fr
  uuid:str
  AES_key:str
  Py_OTP_key:str
+
+ #Password Schema
+ uuid:str
+ credentials_name:str
+ credentials_password:str
  ```
 
 ## Installation & Usage
