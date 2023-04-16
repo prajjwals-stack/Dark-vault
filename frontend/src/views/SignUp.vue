@@ -1,8 +1,13 @@
 <template>
     <div class="container">
+        <Header />
         <div class="row">
-            <div class="col Input" style="background:white; width:50%; height:100vh; ">
-                <form @submit.prevent="submitHandler" style="width:350px; margin:20px">
+            <div class="col Input" >
+                <div  style="display:flex; justify-content:flex-start; align-item:center; color:white;"> 
+                    <h3>Register</h3>
+                </div>
+                
+                <form @submit.prevent="submitHandler" style="width:350px; margin:20px; color:white">
                     <div class="mb-3" style="margin-bottom:30px">
                         <div style="display:flex; justify-content:start; align-item:center;">
                             <label for="InputEmail" class="form-label">Email</label>
@@ -56,18 +61,27 @@
                         </div>
                     </div>
             </div>
-            <div class="col QR_code" style="width:50%; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; ">
-                <img class="QR_image" v-if="state.display"  :src="state.qrcodeimage" alt="QR Code" style="width:300px; height:300px; border:2px solid black; padding: 3px; margin-bottom:5px;"> 
-                <div v-if="state.display"  class="otp_input"  style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+            <div class="col QR_code"  >
+                <div class="False_QR" v-if="!state.display">
+                    <p>Please download the Google Authenticator app from playstore or app store to scan this QR for OTP</p>
+                </div>
+                <img class="QR_image" v-if="state.display"  :src="state.qrcodeimage" alt="QR Code" > 
+                <div v-if="state.display"  class="otp_input"  style="display:flex; flex-direction:column; justify-content:center; align-items:center; margin-bottom:10px">
                     <div class="otp-input">
                         <input class="boxes" v-for="(field, index) in otpFields" :key="index" v-model="field.value" type="text" maxlength="1" minlength="1" @input="onInput(index)" />
                     </div>
                     <button class="btn btn-primary" v-on:click="verifyOtp">Verify OTP</button>
                 </div>
+                <div class="errors" v-if="state.errorOtp">
+                    <div class="alert alert-danger" role="alert">
+                        Enter Correct One time password
+                    </div>
+                </div>
                 
                 
             </div>
         </div>
+        <Footer />
     </div>
 </template>
 <script>
@@ -76,10 +90,12 @@ import { required, email, minLength, sameAs } from '@vuelidate/validators'
 import {reactive, computed} from 'vue';
 import axios from 'axios';
 import QRCode from 'qrcode';
-
+import Header from '@/components/headerComp.vue';
+import Footer from '@/components/footerComp.vue';
 export default{
     props:['otps'],
     components:{
+        Header,Footer
     },
     data() {
     return {
@@ -105,6 +121,8 @@ export default{
             error:"",
             qrcodeimage:'',
             display:false,
+            errorSignUp:false,
+            errorOtp:false,
             
 
         });
@@ -142,6 +160,7 @@ export default{
                     })
                     .catch(err => {
                     console.error(err)
+                    this.state.errorSignUp=true
                     })
 
             })
@@ -151,7 +170,7 @@ export default{
         }
     
 
-            return { state, v$ ,submitHandler };
+            return { state, v$ ,submitHandler};
     
     },
     methods: {
@@ -172,9 +191,11 @@ export default{
         await axios.post(`http://localhost:8000/verify_otp?otp=${this.OTPValue}`)
         .then(res=>{
             console.log(res)
+            window.location='/signin'
         })
         .catch(err=>{
             console.log(err)
+            this.state.errorOtp=true
         })
     }
   }
@@ -184,11 +205,32 @@ export default{
 
 </script>
 <style scoped>
+*{
+    padding: 0%;
+    margin:0%; 
+}
 body{
     padding: 0%;
     margin:0%;
+    background: black;
+    
+    
 }
-
+.container{
+    background: black;
+    margin:0%;
+    padding: 0%;
+    max-width:100%;
+}
+.container .row{
+    background: black;
+    padding: 0%;
+    margin:0%;
+    max-width:100%;
+}
+.container .row .col{
+    background:rgb(20, 20, 20); width:50%; height:100vh;
+}
 
 
 
@@ -203,9 +245,19 @@ body{
     height: 40px;
     margin:5px;
   }
+.container .row .QR_code{
+    width:50%; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; 
+
+  }
 .container .row .QR_code .QR_image{
-    border:1x solid black;
-    padding: 5px;
+    width:300px; height:300px; border:2px solid black; padding: 3px; margin-bottom:5px;
+    
+}
+.container .row .QR_code .False_QR{
+    width:300px; height:300px; border:2px solid white; padding: 3px;
+    display: flex; justify-content: center; align-items: center;
+    background-position: center;   background-size:cover; background-image: linear-gradient(0deg,rgba(247, 4, 4, 0.721),rgba(247, 4, 4, 0.721)), url(@/assets/qr.png);
+    color:white; font-weight: bold;
 }
 
 </style>

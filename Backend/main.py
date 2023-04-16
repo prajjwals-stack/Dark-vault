@@ -1,7 +1,7 @@
 from fastapi import FastAPI,Body,HTTPException,Depends
 from fastapi.middleware.cors import CORSMiddleware
 from config.db_connection import db
-from Model.BaseModel import UserSchema, PasswordSchema,User
+from Model.BaseModel import UserSchema, PasswordSchema,User,IP_Address
 from Auth import auth_obj
 from fastapi.encoders import jsonable_encoder
 from fastapi.security import OAuth2PasswordRequestForm,OAuth2PasswordBearer
@@ -14,6 +14,7 @@ import jwt
 from typing import Annotated
 from Auth import otp_obj
 import base64
+import uuid 
 
 
 key_str=b'\xc3~n.\xb4\x84Q\x8bK \x81\x15{\xe7\xe1\xe9"`?U\xb7\x8f\xb2\xed\xa31+m\x02\xcf+\xed'
@@ -44,8 +45,9 @@ async def home():
 @app.post('/signup')
 async def signup(data:UserSchema=Body(...)):
     newdata = jsonable_encoder(data)
-    newdata=auth_obj.addUser(newdata)
-    image=otp_obj.generate_otp(data.username,data.password)
+    Useruuid =str(uuid.uuid4())
+    newdata=auth_obj.addUser(newdata,Useruuid)
+    image=otp_obj.generate_otp(data.username)
     return image
 
 @app.post('/login')
@@ -57,7 +59,7 @@ async def login(formdata:OAuth2PasswordRequestForm=Depends()):
     user_obj={
         "username":formdata.username,
     }
-    token=jwt.encode(user_obj,SECRET_KEY)
+    token=auth_obj.Create_token(formdata.username);
     return {
         "access_token":token,
         "token_type":"bearer",
@@ -66,7 +68,9 @@ async def login(formdata:OAuth2PasswordRequestForm=Depends()):
 @app.post('/add_credentials')
 async def add_credentials(data:PasswordSchema=Body(...),token: str=Depends(oauth2_scheme)):
     x=Encryption.Encrypt(data.encrypted_password)
+    UserUUID=auth_obj.get_current_user(token)
     dict={
+        "uuid": UserUUID,
         "name":data.data,
         "password":x,
     }
@@ -75,13 +79,24 @@ async def add_credentials(data:PasswordSchema=Body(...),token: str=Depends(oauth
     return "successfully added password"
 
 @app.post('/get_credentials')
-async def get_credentials(data:User=Body(...),token: str=Depends(oauth2_scheme)):
-    print(data.name)
-    y=db[PASSWORD_COLLECTION].find_one({'name':data.name},{'_id': 0})
+async def get_credentials(PassName:str=Body(...),token: str=Depends(oauth2_scheme)):
+    
+    y=db[PASSWORD_COLLECTION].find_one({'name':PassName},{'_id': 0})
     if(y==None):
         raise HTTPException(status_code=404,detail="data not found")
     x=Decryption.Decrypt(y["password"])
     return x
+
+@app.get('/get_all_credentials')
+async def get_all_credentials(token:str=Depends(oauth2_scheme)):
+    UserUUID=auth_obj.get_current_user(token)
+    print(UserUUID)
+    x= db[PASSWORD_COLLECTION].find({
+        "uuid": (UserUUID),
+       
+    },{'_id':0})
+    return list(x)
+    # return True
 
 @app.post('/verify_otp')
 async def verify_otp_mobile(otp:str):
