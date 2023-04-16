@@ -6,7 +6,7 @@ services:
     build: ./
     ports:
       - 8001:8001
-    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8001
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8001
     env_file:
       - app.env
     restart: always
