@@ -9,11 +9,10 @@ import base64
 class Encryption():
     def Encrypt(value:str,uuid:str):
         user=db[USER_COLLECTION].find_one({"uuid":uuid})
-        key=user["key"]
-        print(key)
+        cifer=Fernet(user["key"])
+        print(user["key"])
         value_bytes = value.encode()
-        cipher = Fernet(key)
         # Encrypt the value using the cipher
-        encrypted_value = cipher.encrypt(value_bytes)
+        encrypted_value = cifer.encrypt(value_bytes)
         return encrypted_value
         

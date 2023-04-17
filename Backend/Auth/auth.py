@@ -15,12 +15,13 @@ class Auth:
     def addUser(self,data:dict,uuid:str):
         if(self.checkUser(data['email'])):
             return "user already exists"
+        key=Fernet.generate_key()
         Userdata={
             "email":data['email'],
             "username":data['username'],
             "password":pwd_context.encrypt(data['password']),
             "uuid":uuid,
-            "key":Fernet.generate_key()
+            "key":key
         }
         db["user management"].insert_one(dict(Userdata))
         return "User added successfully"

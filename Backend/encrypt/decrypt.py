@@ -3,14 +3,7 @@ from config.config import USER_COLLECTION
 from config.db_connection import db
 
 
-
-
-
-
-
-
-
-class Decryption():
+class Decryption(): 
     def Decrypt(encrypted_value:str,uuid:str):
         user=db[USER_COLLECTION].find_one({"uuid":uuid})
         key=user["key"]
