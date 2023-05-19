@@ -2,24 +2,39 @@
     <div class="main" >
         <headerComp />
         <div class="container" style="margin-top:60px">
-            <div class="row">
-                <div class="col" style="display:flex; flex-direction:row; justify-content:space-evenly; align-items:center">
-                    <div class="password" style="margin-top:100px;  ">
-                        <h3>Credential</h3>
-                        <div v-for="x in list" :key="x" style="display:flex;   justify-content:flex-start; align-items:center; width:50%">
-                            <p>{{ x.name.toUpperCase() }}</p>
-                        </div>
+            <div class="row" >
+                <div >
+                    <div style="display:flex; flex-direction:row; justify-content:flex-start;  margin-top:20px; color:#C0C0C0">
+                        <h3>ADD CREDENTIALS</h3>
                     </div>
-                    <div class="password" style="margin-top:100px; ">
-                        <h3>Password</h3>
-                        <div v-for="x in list" :key="x" style="display:flex;   justify-content:flex-start; align-items:center; width:50%">
-                            <p>********</p>
+                    
+                    <form @submit.prevent style="display:flex; flex-direction:row; justify-content:flex-start">
+                        <input type="text" placeholder="Website Name" style="margin:10px; border-radius:10px; border:2px solid black" v-model="name">
+                        <input type="password" placeholder="Password" style="margin:10px; border-radius:10px; border:2px solid black" v-model="password"> 
+                        <button v-on:click="submit" class="btn btn-primary" style="margin:10px; border:2px solid black; background:#800020">Add Credentials</button>
+                    </form> 
+                    
+                </div>
+                <div class="container" >
+                    <div class="row" style="margin-top:70px; width:100%; ">
+                        
+                        <div style="display:flex; flex-direction:row; justify-content:flex-start; margin-bottom:20px; color:#C0C0C0">
+                            <h3>AVAILABLE CREDENTIALS</h3>
+                            
+                        </div>
+                        <div v-if="Framedata==10" style="display:flex; flex-direction:row; justify-content:flex-start; margin-bottom:20px; color:#C0C0C0">
+                                <h4> Website: {{ this.Website}}</h4> 
+                                <h4>Password: {{ this.website_password }} <span><img src="" alt="">{{ Numbering }}</span></h4>
+                        </div>
+                        <div  v-for="x in list" :key="x" style="margin-bottom:10px" class="col-3" >
+                            <div style="width:100%; height:100px;   background:#005A5B; border-radius:10px; display:flex; justify-content:center; align-items:center">
+                                <p style="font-size: 100%; color:white" v-on:click="get_password(x['name'])" >{{ x['name'].toUpperCase() }}</p>
+                                
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <h1>PINs</h1>
-                </div>
+                
             </div>
 
         </div>
@@ -44,7 +59,14 @@ export default {
     },
     data(){
         return {
-            list:""
+            list:"",
+            name:"",
+            password:"",
+            Framedata:0,
+            Website:'',
+            website_password:"",
+            Numbering:30,
+
         }
     },
     mounted(){
@@ -58,22 +80,70 @@ export default {
             .then(res=>{
                 this.list=res.data
                 console.log(this.list)
+                console.log(res)
             })
             .catch(err=>{   
                 console.log(err)
             })
 
         }
+        
         return { getList}
-    }
+    },
+    methods: {
+        async  submit(){
+            console.log(this.name,this.password)
+            axios.post(`http://localhost:8000/add_credentials`,{
+                data: this.name,
+                encrypted_password: this.password
+            })
+            .then(res=>{
+                
+                console.log(res)
+                location.reload()
+            })
+            .catch(err=>{   
+                console.log(err)
+            })
+        },
+        async get_password(name){
+            axios.post(`http://localhost:8000/get_credentials`,name)
+            .then(res=>{
+                this.Website=name;
+                this.website_password=res.data;
+                this.Framedata=10;
+                console.log("hello");
+                setInterval(function(){ this.Numbering--;},1000)
+                console.log("hello again");
+                console.log(res)
+            })
+            .catch(err=>{
+                console.log(err)
+            })
+        }
+    },
 }
 </script>
 
 <style scoped>
+*{
+    padding: 0%;
+    margin:0%; 
+    font-family: 'Playguard', sans-serif;
+    color:#C0C0C0;
+}
+body{
+    font-family: 'Playguard', sans-serif;
+    color:#C0C0C0;
+    overflow:hidden;
+}
 .main{
     width:100%;
     height:100vh;
-    background: black !important;
+    background: #333333;
+    overflow:hidden;
 }
+    
+
 
 </style>

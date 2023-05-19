@@ -35,27 +35,27 @@
                         </div>
                         <input type="password" class="form-control" id="InputConfirmPassword" placeholder="**********" v-model="state.confirm">
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width:100%" >Submit</button>
+                    <button type="submit" class="btn btn-primary" style="width:100%; background:#800020" >Submit</button>
                     
                 </form>
                 <div class="errors">
                         <div style="display:flex; justify-content:start; align-item:center;">
-                            <p v-if="v$.email.$error" style="font-size:x-small; color:red">
+                            <p v-if="v$.email.$error" style="font-size:x-small; color:#800020">
                                 Enter a valid email address
                         </p>
                         </div>
                         <div style="display:flex; justify-content:start; align-item:center;">
-                            <p v-if="v$.username.$error" style="font-size:x-small; color:red">
+                            <p v-if="v$.username.$error" style="font-size:x-small; color:#800020">
                                         Enter a valid username
                         </p>
                         </div>
                         <div style="display:flex; justify-content:start; align-item:center;">
-                            <p v-if="v$.password.$error" style="font-size:x-small; color:red">
+                            <p v-if="v$.password.$error" style="font-size:x-small; color:#800020">
                                         Enter a valid password(The password should be at least 8 characters long)
                         </p>
                         </div>
                         <div style="display:flex; justify-content:start; align-item:center;">
-                            <p v-if="v$.confirm.$error" style="font-size:x-small; color:red">
+                            <p v-if="v$.confirm.$error" style="font-size:x-small; color:#800020">
                                         Confirm password should be same as password
                         </p>
                         </div>
@@ -70,7 +70,7 @@
                     <div class="otp-input">
                         <input class="boxes" v-for="(field, index) in otpFields" :key="index" v-model="field.value" type="text" maxlength="1" minlength="1" @input="onInput(index)" />
                     </div>
-                    <button class="btn btn-primary" v-on:click="verifyOtp">Verify OTP</button>
+                    <button class="btn btn-primary" v-on:click="verifyOtp" style="background:#800020">Verify OTP</button>
                 </div>
                 <div class="errors" v-if="state.errorOtp">
                     <div class="alert alert-danger" role="alert">
@@ -208,11 +208,13 @@ export default{
 *{
     padding: 0%;
     margin:0%; 
+    font-family: 'Playguard', sans-serif;
 }
 body{
     padding: 0%;
     margin:0%;
     background: black;
+    font-family: 'Playguard', sans-serif;
     
     
 }
@@ -257,7 +259,7 @@ body{
     width:300px; height:300px; border:2px solid white; padding: 3px;
     display: flex; justify-content: center; align-items: center;
     background-position: center;   background-size:cover; background-image: linear-gradient(0deg,rgba(247, 4, 4, 0.721),rgba(247, 4, 4, 0.721)), url(@/assets/qr.png);
-    color:white; font-weight: bold;
+    color:#00FFFF; font-weight: bold;
 }
 
 </style>

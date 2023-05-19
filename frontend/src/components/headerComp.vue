@@ -1,15 +1,16 @@
 <template>
     <div class="header">
-        <h2 class="companyLogo">DarkVault</h2>
+        <h1 class="companyLogo">DARKVAULT</h1>
         
    </div>
 
 </template>
 <style>
 .header{
+    font-family: 'Playguard', sans-serif;
     position:fixed;
     top:0;
-    background: #FFFFFF;
+    background: #005A5B ;
     left:0;
     width:100%;
     height:9%;
@@ -18,7 +19,7 @@
     flex-direction:row;
     justify-content:space-between;
     align-items:center;
-    border-bottom: 1px solid rgb(115, 137, 152);
+    color:#C0C0C0;
 }
 .header .companyLogo{
     margin-left:5px;

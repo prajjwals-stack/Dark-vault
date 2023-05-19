@@ -3,11 +3,12 @@
         <Header />
         <div class="row">
             <div class="col Input" >
-                <div  style="display:flex; justify-content:flex-start; align-item:center; color:white;"> 
-                    <h3>Login</h3>
-                </div>
                 
-                <form @submit.prevent="submitHandler" style="width:350px; margin:20px; color:white">
+                
+                <form @submit.prevent="submitHandler" style="width:350px; margin:20px; color:white;">
+                    <div  style="display:flex; justify-content:flex-start; align-item:center; color:white; margin-bottom:20px"> 
+                        <h2>LOGIN</h2>
+                    </div>
                     <div class="mb-3">
                         <div style="display:flex; justify-content:start; align-item:center;">
                             <label for="InputName" class="form-label">Username</label>
@@ -22,18 +23,18 @@
                         <input type="password" class="form-control" id="InputPassword" placeholder="**********" v-model="state.password">
                     </div>
                     
-                    <button type="submit" class="btn btn-primary" style="width:100%" >Submit</button>
+                    <button type="submit" class="btn btn-primary" style="width:100%; background:#800020" >Submit</button>
                     
                 </form>
                 <div class="errors">
                        
                         <div style="display:flex; justify-content:start; align-item:center;">
-                            <p v-if="v$.username.$error" style="font-size:x-small; color:red">
+                            <p v-if="v$.username.$error" style="font-size:x-small; color:#800020">
                                         Enter a valid username
                         </p>
                         </div>
                         <div style="display:flex; justify-content:start; align-item:center;">
-                            <p v-if="v$.password.$error" style="font-size:x-small; color:red">
+                            <p v-if="v$.password.$error" style="font-size:x-small; color:#800020">
                                         Enter a valid password(The password should be at least 8 characters long)
                         </p>
                         </div>
@@ -45,7 +46,7 @@
                     <div class="otp-input">
                         <input class="boxes" v-for="(field, index) in otpFields" :key="index" v-model="field.value" type="text" maxlength="1" minlength="1" @input="onInput(index)" />
                     </div>
-                    <button class="btn btn-primary" v-on:click="verifyOtp">Verify OTP</button>
+                    <button class="btn btn-primary" v-on:click="verifyOtp" style="background:#800020" >Verify OTP</button>
                 </div>
                 <div class="errors" v-if="state.errorOtp">
                     <div class="alert alert-danger" role="alert">
@@ -175,28 +176,30 @@ export default{
 *{
     padding: 0%;
     margin:0%; 
+    font-family: 'Playguard', sans-serif;
 }
 body{
     padding: 0%;
     margin:0%;
-    background: black;
+    background: #333333;
+    font-family: 'Playguard', sans-serif;
     
     
 }
 .container{
-    background: black;
+    background: #333333;
     margin:0%;
     padding: 0%;
     max-width:100%;
 }
 .container .row{
-    background: black;
+    background:#333333;
     padding: 0%;
     margin:0%;
     max-width:100%;
 }
 .container .row .col{
-    background:rgb(20, 20, 20); width:50%; height:100vh;
+    background:#333333; width:50%; height:100vh;
 }
 
 

@@ -10,7 +10,11 @@
   text-align: center;
   color: #2c3e50;
 }
-
+@font-face {
+  font-family: 'Playguard';
+  src: url('../src/assets/plaguard-zvnjx.otf') format('truetype');
+  
+}
 nav {
   padding: 30px;
 }

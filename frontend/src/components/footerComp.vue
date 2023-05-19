@@ -1,14 +1,15 @@
 <template>
     <footer>
-        <p class="Footer"><span style="color:black;">Copyright</span> <a href="https://www.quantrium.ai/"><span class="copyright_text"> Prajjwal soni</span></a></p>
+        <p class="Footer"><span style="color:#C0C0C0;">COPYWRITE @</span> <span class="copyright_text"> PRAJJWAL SONI</span></p>
     </footer>
 </template>
 
 <style>
 footer{
+    font-family: 'Playguard', sans-serif;
     position:fixed;
     bottom:0;
-    background: #FFFFFF;
+    background: #005A5B;
     left:0;
     width:100%;
     height:30px;
@@ -16,11 +17,11 @@ footer{
     display:flex;
     justify-content:center;
     align-items:baseline;
-    border:1px solid  rgb(115, 137, 152);
+    color:#C0C0C0;
     
 }
 footer .Footer  img{
-    color:black;
+    
     height:25px;
 
 }
@@ -28,7 +29,7 @@ footer .Footer a{
     text-decoration: none;
 }
 footer .Footer a .copyright_text{
-    color:black;
+    color:#C0C0C0;
     
 }
 
