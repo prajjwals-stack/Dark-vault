@@ -123,6 +123,7 @@ export default{
             display:false,
             errorSignUp:false,
             errorOtp:false,
+            IPAddress:''
             
 
         });
@@ -137,13 +138,15 @@ export default{
         });
         const v$ = useValidate(rules, state);
 
-
+        
 
         async function submitHandler(){
             console.log("submitted")
             const isFormCorrect =await this.v$.$validate()
             if(!isFormCorrect)return
             console.log("hahahahhah")
+            
+            console.log("ip address", this.state.IPAddress)
             await axios.post('http://localhost:8000/signup',{
                 email: this.state.email,
                 username: this.state.username,

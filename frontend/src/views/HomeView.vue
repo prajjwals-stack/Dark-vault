@@ -23,7 +23,7 @@
                             
                         </div>
                         
-                        <div v-if="Framedata==10" style=" margin-bottom:10px; height:100px; border-radius:10px; background:#005A5B; border:2px solid green " class="col-3">
+                        <div v-if="Framedata==10" style=" margin-bottom:10px; height:100px; border-radius:10px; background:#005A5B; border:2px solid #51ff0d " class="col-3">
                                 <div style="display:flex; justify-content:flex-end; margin:0;">
                                     <img src="../assets/copy_clipboard.png" alt="" style="width:20px; height:20px; margin-right:10px" v-on:click="copy(this.website_password)">
                                     <p id="numbering">{{ Numbering }}</p>
