@@ -48,8 +48,8 @@
                     </div>
                     <button class="btn btn-primary" v-on:click="verifyOtp" style="background:#800020" >Verify OTP</button>
                 </div>
-                <div class="errors" v-if="state.errorOtp">
-                    <div class="alert alert-danger" role="alert">
+                <div class="errors" style="width:100%; height:30px" >
+                    <div class="alert alert-danger" role="alert" v-if="state.errorOtp" >
                         Enter Correct One time password
                     </div>
                 </div>

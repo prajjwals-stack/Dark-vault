@@ -2,17 +2,17 @@ version: '3'
 
 services:
 
-  DarkVault_backend:
-    build: ./
+  darkvault_backend:
+    build: ./backend
     ports:
       - 8001:8001
     command: uvicorn main:app --reload --host 0.0.0.0 --port 8001
     env_file:
-      - app.env
+      - Backend/.env
     restart: always
 
 
-  DarkVault_frontend:
+  darkvault_frontend:
    build: ./frontend
    volumes:
      - './frontend:/app'
